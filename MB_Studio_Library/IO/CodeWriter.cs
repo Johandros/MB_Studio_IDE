@@ -2783,7 +2783,7 @@ namespace MB_Studio_Library.IO
                             otherPos = k;
                     if (otherPos >= 0)
                     {
-                        relations[otherPos][i] = rels[j];
+                        //relations[otherPos][i] = rels[j]; // doesn't fully make sense atm
                         relations[i][otherPos] = rels[j];
                     }
                     else
