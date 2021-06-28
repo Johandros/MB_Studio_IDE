@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Security.Permissions;
 using System.Threading;
 using System.Windows.Forms;
@@ -24,6 +25,11 @@ namespace MB_Studio
 
             // Add the event handler for handling non-UI thread exceptions to the event.
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+
+            // Set Culture to invariant for numbers - otherwise there are problems with "," and "."
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("de-DE"); // quick and dirty fix - change later
+            // Later this should be active, but first remove Comma and Dot replace functions
+            //CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
             // Runs the application.
             Application.EnableVisualStyles();
