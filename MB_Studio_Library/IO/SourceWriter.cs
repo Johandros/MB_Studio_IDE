@@ -688,7 +688,7 @@ namespace MB_Studio_Library.IO
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.InfoPage);
                 foreach (InfoPage infoPage in objects)
-                    wr.WriteLine(" (\"" + infoPage.ID + "\", \"" + ImportantMethods.EscapeString(infoPage.Name) + "\", \"" + ImportantMethods.EscapeString(infoPage.Text) + "\"),");
+                    wr.WriteLine(" (\"" + infoPage.ID + "\", \"" + ImportantMethods.EscapeString(infoPage.Name) + "\", \"" + infoPage.Text + "\"),");
                 wr.WriteLine(Environment.NewLine + "] # INFO_PAGES END");
             }
             return objects.Count;
@@ -727,7 +727,7 @@ namespace MB_Studio_Library.IO
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Quest); //wr.WriteLine("from header_quests import *");
                 foreach (Quest quest in objects)
-                    wr.WriteLine(" (\"" + quest.ID + "\", \"" + ImportantMethods.EscapeString(quest.Name) + "\", " + quest.Flags + "," + Environment.NewLine + "  \"" + ImportantMethods.EscapeString(quest.Description) + '\"' + Environment.NewLine + "  ),");
+                    wr.WriteLine(" (\"" + quest.ID + "\", \"" + ImportantMethods.EscapeString(quest.Name) + "\", " + quest.Flags + "," + Environment.NewLine + "  \"" + quest.Description + '\"' + Environment.NewLine + "  ),");
                 wr.WriteLine(Environment.NewLine + "] # QUESTS END");
             }
             return objects.Count;
@@ -1042,7 +1042,7 @@ namespace MB_Studio_Library.IO
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Skill);
                 foreach (Skill skill in objects)
-                    wr.WriteLine("  (\"" + skill.ID + "\",\"" + ImportantMethods.EscapeString(skill.Name) + "\"," + skill.Flags + "," + skill.MaxLevel + ",\"" + ImportantMethods.EscapeString(skill.Description) + "\"),");
+                    wr.WriteLine("  (\"" + skill.ID + "\",\"" + ImportantMethods.EscapeString(skill.Name) + "\"," + skill.Flags + "," + skill.MaxLevel + ",\"" + skill.Description + "\"),");
                 wr.WriteLine("] # SKILLS END");
             }
             return objects.Count;
