@@ -149,7 +149,7 @@ namespace CheckIfEqualFiles
                     {
                         generatedFolderPath = modDirs[int.Parse(input)] + '\\';
 
-                        using (logWriter = new StreamWriter(orgModName.ToLower() + '_' + DateTime.Now.ToShortDateString() + ".log"))
+                        using (logWriter = new StreamWriter(orgModName.ToLower() + '_' + DateTime.Now.Date.ToString("MM_dd_yyyy") + ".log"))
                         {
                             while (!input.Equals(EXIT) && !input.Equals(CHANGE_MODULE))
                             {

@@ -1632,13 +1632,14 @@ namespace MB_Studio_Library.IO
                     List<string[]> list = new List<string[]>
                     {
                         sr.ReadLine().Substring(5).Replace("  ", ":").TrimEnd().Split(':'),
-                        sr.ReadLine().Replace("   ", " ").Split(' '),
-                        sr.ReadLine().Replace("   ", " ").Split(' '),
-                        sr.ReadLine().Replace("   ", " ").Split(' '),
-                        sr.ReadLine().Replace("   ", " ").Split(' '),
-                        sr.ReadLine().Replace("   ", " ").Split(' '),
-                        sr.ReadLine().Replace("   ", ":").TrimEnd().Split(':'),
-                        sr.ReadLine().Replace("   ", ":").TrimEnd().Split(':')
+                        RemNTrimAllXtraSp(sr.ReadLine()).Split(' '),
+                        RemNTrimAllXtraSp(sr.ReadLine()).Split(' '),
+                        RemNTrimAllXtraSp(sr.ReadLine()).Split(' '),
+                        RemNTrimAllXtraSp(sr.ReadLine()).Split(' '),
+                        RemNTrimAllXtraSp(sr.ReadLine()).Split(' '),
+                        // Dirty fix - change later if possible
+                        sr.ReadLine().Replace("   ", ":").Replace("  ", ":").TrimEnd().Split(':'),
+                        sr.ReadLine().Replace("   ", ":").Replace("  ", ":").TrimEnd().Split(':')
                     };
                     particleSystems.Add(new ParticleSystem(list));
                 }

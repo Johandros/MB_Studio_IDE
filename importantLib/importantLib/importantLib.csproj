@@ -8,7 +8,7 @@
     <Description>importantLib</Description>
     <Authors>J.SYS</Authors>
     <Company>J.SYS</Company>
-    <SignAssembly>True</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyVersion>2.3.0.0</AssemblyVersion>
     <FileVersion>2.3.0.0</FileVersion>
     <DefineConstants>$(TargetFramework.Replace(".","_").ToUpper());$(DefineConstants)</DefineConstants>
