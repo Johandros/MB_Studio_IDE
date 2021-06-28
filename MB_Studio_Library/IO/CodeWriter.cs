@@ -1924,8 +1924,17 @@ namespace MB_Studio_Library.IO
             bool done = false;
 
             bool autoIdsHasKey = AutoIdsHasKey(autoIds, autoId);
-            if (!autoIdsHasKey || (autoIdsHasKey && AutoIdsGetValue(autoIds, autoId).Equals(text)))
-                done = true;
+            if (!autoIdsHasKey) //|| (autoIdsHasKey && AutoIdsGetValue(autoIds, autoId).Equals(text)))
+            {
+                //bool duplicate = true;
+
+                // TODO: check duplicate
+
+                //if (duplicate)
+                //{
+                    done = true;
+                //}
+            }
 
             if (!done)
             {
