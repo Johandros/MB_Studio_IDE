@@ -495,7 +495,7 @@ namespace MB_Studio_Library.Objects
             ItemFlags.Clear();
 
             List<string> tmpList = new List<string>(items.Trim().Split());
-            int itemCount = tmpList.Count / 2 - 1;
+            int itemCount = tmpList.Count / 2; // - 1;
             for (int i = 0; i < itemCount; i++)
             {
                 string itemX2 = tmpList[i * 2].Trim();

@@ -727,7 +727,7 @@ namespace MB_Studio_Library.IO
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Quest); //wr.WriteLine("from header_quests import *");
                 foreach (Quest quest in objects)
-                    wr.WriteLine(" (\"" + quest.ID + "\", \"" + ImportantMethods.EscapeString(quest.Name) + "\", " + quest.Flags + "," + Environment.NewLine + "  \"" + quest.Description + '\"' + Environment.NewLine + "  ),");
+                    wr.WriteLine(" (\"" + quest.ID + "\", \"" + ImportantMethods.EscapeString(quest.Name) + "\", " + quest.Flags + "," + Environment.NewLine + "  \"" + quest.Description.Replace('_', ' ') + '\"' + Environment.NewLine + "  ),");
                 wr.WriteLine(Environment.NewLine + "] # QUESTS END");
             }
             return objects.Count;
@@ -873,7 +873,7 @@ namespace MB_Studio_Library.IO
                             wr.WriteLine();
                     }
                     wr.WriteLine("],");
-                    wr.WriteLine('\"' + dialog.DialogText + "\", \"" + dialog.EndDialogState + "\",");
+                    wr.WriteLine('\"' + ImportantMethods.EscapeString(dialog.DialogText.Replace('_', ' ')) + "\", \"" + dialog.EndDialogState + "\",");
                     wr.Write("[");
                     for (int i = 0; i < dialog.ConsequenceBlock.Length; i++)
                     {
@@ -972,7 +972,7 @@ namespace MB_Studio_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.PartyTemplate);
                 foreach (PartyTemplate partyTemplate in objects)
                 {
-                    wr.Write("  (\"" + partyTemplate.ID + "\",\"" + ImportantMethods.EscapeString(partyTemplate.Name) + "\"," + partyTemplate.Flags + "," + partyTemplate.MenuID + ","
+                    wr.Write("  (\"" + partyTemplate.ID + "\",\"" + ImportantMethods.EscapeString(partyTemplate.Name.Replace('_', ' ')) + "\"," + partyTemplate.Flags + "," + partyTemplate.MenuID + ","
                         + partyTemplate.Faction + "," + partyTemplate.Personality + ",[");
                     for (int i = 0; i < partyTemplate.Members.Length; i++)
                     {
@@ -1004,7 +1004,7 @@ namespace MB_Studio_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Party);
                 foreach (Party party in objects)
                 {
-                    wr.Write("  (\"" + party.ID + "\", \"" + ImportantMethods.EscapeString(party.Name) + "\", " + party.Flags + ", " + party.MenuID + ", " + party.PartyTemplate + ", " + party.Faction + ", "
+                    wr.Write("  (\"" + party.ID + "\", \"" + ImportantMethods.EscapeString(party.Name.Replace('_', ' ')) + "\", " + party.Flags + ", " + party.MenuID + ", " + party.PartyTemplate + ", " + party.Faction + ", "
                         + party.Personality + ", " + party.AIBehavior + ", " + party.AITargetParty + ", (" + CodeReader.Repl_CommaWDot(party.InitialCoordinates[0].ToString()) + ", "
                         + CodeReader.Repl_CommaWDot(party.InitialCoordinates[1].ToString()) + "), [");
                     for (int i = 0; i < party.Members.Length; i++)
