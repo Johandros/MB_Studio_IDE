@@ -448,8 +448,8 @@ namespace MB_Studio_Library.IO
                         scnCode = troop.SceneCode;
 
                     //Troop.GetFlagsFromValue(HexConverter.Dec2Hex(troop.Flags)) --> troop.Flags
-                    wr.Write(Environment.NewLine + " [\"" + troop.ID + "\",\"" + troop.Name + "\",\"" + troop.PluralName + "\"," + troop.Flags + "," + scnCode + ","
-                        + troop.Reserved + "," + CodeReader.Factions[troop.FactionID] + "," + Environment.NewLine + "  [");
+                    wr.Write(Environment.NewLine + " [\"" + troop.ID + "\",\"" + ImportantMethods.EscapeString(troop.Name) + "\",\"" + ImportantMethods.EscapeString(troop.PluralName) + "\","
+                        + troop.Flags + "," + scnCode + "," + troop.Reserved + "," + CodeReader.Factions[troop.FactionID] + "," + Environment.NewLine + "  [");
 
                     for (int i = 0; i < troop.Items.Count; i++)
                     {
@@ -585,7 +585,7 @@ namespace MB_Studio_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Item);
                 foreach (Item item in objects)
                 {
-                    wr.Write(Environment.NewLine + "[\"" + item.ID + "\",\"" + item.Name + "\",[");
+                    wr.Write(Environment.NewLine + "[\"" + item.ID + "\",\"" + ImportantMethods.EscapeString(item.Name) + "\",[");
                     for (int i = 0; i < item.Meshes.Count; i++)
                     {
                         wr.Write("(\"" + item.Meshes[i].Name + "\"," + Item.GetMeshKindFromValue((ulong)item.Meshes[i].Value) + ')');
@@ -688,7 +688,7 @@ namespace MB_Studio_Library.IO
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.InfoPage);
                 foreach (InfoPage infoPage in objects)
-                    wr.WriteLine(" (\"" + infoPage.ID + "\", \"" + infoPage.Name + "\", \"" + infoPage.Text + "\"),");
+                    wr.WriteLine(" (\"" + infoPage.ID + "\", \"" + ImportantMethods.EscapeString(infoPage.Name) + "\", \"" + ImportantMethods.EscapeString(infoPage.Text) + "\"),");
                 wr.WriteLine(Environment.NewLine + "] # INFO_PAGES END");
             }
             return objects.Count;
@@ -727,7 +727,7 @@ namespace MB_Studio_Library.IO
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Quest); //wr.WriteLine("from header_quests import *");
                 foreach (Quest quest in objects)
-                    wr.WriteLine(" (\"" + quest.ID + "\", \"" + quest.Name + "\", " + quest.Flags + "," + Environment.NewLine + "  \"" + quest.Description + '\"' + Environment.NewLine + "  ),");
+                    wr.WriteLine(" (\"" + quest.ID + "\", \"" + ImportantMethods.EscapeString(quest.Name) + "\", " + quest.Flags + "," + Environment.NewLine + "  \"" + ImportantMethods.EscapeString(quest.Description) + '\"' + Environment.NewLine + "  ),");
                 wr.WriteLine(Environment.NewLine + "] # QUESTS END");
             }
             return objects.Count;
@@ -896,7 +896,7 @@ namespace MB_Studio_Library.IO
                 for (int i = 0; i < objects.Count; i++)
                 {
                     Faction fac = (Faction)objects[i];
-                    wr.Write("  (\"" + fac.ID + "\", \"" + fac.Name + "\", " + fac.Flags + ", " + CodeReader.Repl_CommaWDot(fac.Relations[i].ToString()) + ", [");
+                    wr.Write("  (\"" + fac.ID + "\", \"" + ImportantMethods.EscapeString(fac.Name) + "\", " + fac.Flags + ", " + CodeReader.Repl_CommaWDot(fac.Relations[i].ToString()) + ", [");
                     for (int j = 0; j < fac.Relations.Length; j++)
                     {
                         if (fac.Relations[j] != 0f)
@@ -972,7 +972,7 @@ namespace MB_Studio_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.PartyTemplate);
                 foreach (PartyTemplate partyTemplate in objects)
                 {
-                    wr.Write("  (\"" + partyTemplate.ID + "\",\"" + partyTemplate.Name + "\"," + partyTemplate.Flags + "," + partyTemplate.MenuID + ","
+                    wr.Write("  (\"" + partyTemplate.ID + "\",\"" + ImportantMethods.EscapeString(partyTemplate.Name) + "\"," + partyTemplate.Flags + "," + partyTemplate.MenuID + ","
                         + partyTemplate.Faction + "," + partyTemplate.Personality + ",[");
                     for (int i = 0; i < partyTemplate.Members.Length; i++)
                     {
@@ -1004,7 +1004,7 @@ namespace MB_Studio_Library.IO
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Party);
                 foreach (Party party in objects)
                 {
-                    wr.Write("  (\"" + party.ID + "\", \"" + party.Name + "\", " + party.Flags + ", " + party.MenuID + ", " + party.PartyTemplate + ", " + party.Faction + ", "
+                    wr.Write("  (\"" + party.ID + "\", \"" + ImportantMethods.EscapeString(party.Name) + "\", " + party.Flags + ", " + party.MenuID + ", " + party.PartyTemplate + ", " + party.Faction + ", "
                         + party.Personality + ", " + party.AIBehavior + ", " + party.AITargetParty + ", (" + CodeReader.Repl_CommaWDot(party.InitialCoordinates[0].ToString()) + ", "
                         + CodeReader.Repl_CommaWDot(party.InitialCoordinates[1].ToString()) + "), [");
                     for (int i = 0; i < party.Members.Length; i++)
@@ -1042,7 +1042,7 @@ namespace MB_Studio_Library.IO
             {
                 WriteImportsDescriptionAndOptionalCode(wr, ObjectType.Skill);
                 foreach (Skill skill in objects)
-                    wr.WriteLine("  (\"" + skill.ID + "\",\"" + skill.Name + "\"," + skill.Flags + "," + skill.MaxLevel + ",\"" + skill.Description + "\"),");
+                    wr.WriteLine("  (\"" + skill.ID + "\",\"" + ImportantMethods.EscapeString(skill.Name) + "\"," + skill.Flags + "," + skill.MaxLevel + ",\"" + ImportantMethods.EscapeString(skill.Description) + "\"),");
                 wr.WriteLine("] # SKILLS END");
             }
             return objects.Count;

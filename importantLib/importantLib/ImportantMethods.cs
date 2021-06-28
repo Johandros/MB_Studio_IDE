@@ -484,5 +484,17 @@ namespace importantLib
             }
             return null;
         }
+
+        public static string EscapeString(string text)
+        {
+            string s = text;
+
+            if (s.Contains("\""))
+            {
+                s = s.Replace("\"", "\\\"");
+            }
+
+            return s;
+        }
     }
 }

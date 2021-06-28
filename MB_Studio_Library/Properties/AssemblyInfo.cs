@@ -8,7 +8,7 @@
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("J.SYS")]
 [assembly: AssemblyProduct("MB Studio Library")]
-[assembly: AssemblyCopyright("Copyright ©  2016 - 2018")]
+[assembly: AssemblyCopyright("Copyright ©  2016 - 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -30,5 +30,5 @@
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.2.0.1")]
-[assembly: AssemblyFileVersion("3.2.0.1")]
+[assembly: AssemblyVersion("3.2.2.2")]
+[assembly: AssemblyFileVersion("3.2.2.2")]
