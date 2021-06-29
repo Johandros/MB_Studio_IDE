@@ -1839,6 +1839,10 @@ namespace MB_Studio_Library.IO
                 elements = (int)codes[i];
                 i++;
 
+                if (script[activeScriptLine].EndsWith(codeDeclarations[0])) // call_script = 1
+                    if (codes[i] < SCRIPT_MIN)
+                        codes[i] = codes[i] + SCRIPT_MIN; // e.g. Napoleonic Wars uses script ID instead of 'SCRIPT_MIN'
+
                 int x = i + elements;
                 for (int j = i; j < x; j++)
                     script[activeScriptLine] = GetDecompiledCodeParameters(script[activeScriptLine] + ", \"", codes[j], activeScriptLine); // SOMETIMES THIS IS THE DANGERZONE !!!
