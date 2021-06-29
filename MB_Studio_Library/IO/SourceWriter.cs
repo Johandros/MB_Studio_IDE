@@ -648,9 +648,9 @@ namespace MB_Studio_Library.IO
                 for (int i = 4; i < objects.Count; i++)
                 {
                     tmpS = ((GameString)objects[i]).Text.Split('^');
-                    wr.Write("  (\"" + objects[i].ID + "\", \"" + tmpS[0]);
+                    wr.Write("  (\"" + objects[i].ID + "\", \"" + ImportantMethods.EscapeString(tmpS[0]));
                     for (int j = 1; j < tmpS.Length; j++)
-                        wr.Write('\\' + Environment.NewLine + '^' + tmpS[j]);
+                        wr.Write('\\' + Environment.NewLine + '^' + ImportantMethods.EscapeString(tmpS[j]));
                     wr.WriteLine("\"),");
                 }
                 wr.WriteLine("] # STRINGS END");
