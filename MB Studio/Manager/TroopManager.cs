@@ -31,7 +31,7 @@ namespace MB_Studio.Manager
         public TroopManager() : base(Skriptum.ObjectType.Troop, true)
         {
             if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectType, true);// ansonsten für alle in Toolform
+                types = new CodeReader(CodeReader.ModPath + CodeReader.Files[ObjectTypeID]).ReadObjectType(ObjectTypeID, true);// ansonsten für alle in Toolform
 
             InitializeComponent();
         }
