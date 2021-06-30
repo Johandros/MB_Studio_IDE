@@ -78,7 +78,20 @@ namespace MB_Studio_Library.IO
             SourceWriter w = new SourceWriter();
 
             if (objects == null)
+            {
                 objects = CodeReader.ReadAllObjects();
+
+                // FOR SOURCE CODE READING
+                // List<List<Skriptum>> objects_source = SourceReader.ReadAllObjects();
+                // foreach (List<Skriptum> elementCollection in objects_source)
+                // {
+                //    foreach (Skriptum item in elementCollection)
+                //    {
+                //        // TODO: compare txt file objects with possible altered source code version and use source instead
+                //        // TODO: auto remove objects which didn't exist in source objects anymore
+                //    }
+                // }
+            }
 
             List<int> foundTypes = new List<int>();
 
