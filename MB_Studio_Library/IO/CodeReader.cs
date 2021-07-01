@@ -2267,6 +2267,13 @@ namespace MB_Studio_Library.IO
             return newMissionTemplate;
         }
 
+        /// <summary>
+        /// this logic is too complicated and should be simplified
+        /// It also has a potential for syntax problems when there 
+        /// aren't two spaces between the different blocks!!!
+        /// </summary>
+        /// <param name="array"></param>
+        /// <returns></returns>
         private static Trigger DecompileTrigger(string[] array)
         {
             int mode = 1, x;
