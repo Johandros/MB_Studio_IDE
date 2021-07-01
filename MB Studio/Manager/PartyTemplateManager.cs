@@ -279,8 +279,8 @@ namespace MB_Studio.Manager
             #region GROUP4
 
             char[] personality = HexConverter.Dec2Hex(partyTemplate.Personality).ToString().Substring(5).ToCharArray();
-            courage_num.Value = int.Parse(personality[0].ToString());
-            aggressiveness_num.Value = int.Parse(personality[1].ToString());
+            courage_num.Value = Convert.ToInt32(personality[0].ToString(), 16);
+            aggressiveness_num.Value = Convert.ToInt32(personality[1].ToString(), 16);
             if (personality[2] != '0')
                 banditness_cb.CheckState = CheckState.Checked;
 
