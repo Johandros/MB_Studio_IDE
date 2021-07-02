@@ -55,6 +55,13 @@ namespace brfManager
         );
 
         [DllImport(OPEN_BRF_DLL_PATH)]
+        [return: MarshalAs(UnmanagedType.BStr)]
+        public static extern string StringArrayTest(byte onlyCurrentModule, byte commonRes, [MarshalAs(UnmanagedType.SysInt)]out IntPtr t);
+
+        [DllImport(OPEN_BRF_DLL_PATH)]
+        public static extern bool StringArrayTestUnload([MarshalAs(UnmanagedType.SysInt)]IntPtr t);
+
+        [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static byte IsCurHWndShown();
 
         [DllImport(OPEN_BRF_DLL_PATH)]
@@ -439,6 +446,10 @@ namespace brfManager
         /// <returns></returns>
         public List<string> GetAllModuleNames()
         {
+            string x = StringArrayTest(0, 2, out IntPtr t);
+            //StringArrayTestUnload(t);
+            Console.WriteLine(x + " /// " + t);
+
             GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 2);
             managedStringArray = managedStringArray[0].TrimEnd(';').Split(';');
             List<string> list = new List<string>();
@@ -455,6 +466,11 @@ namespace brfManager
         public List<string> GetCurrentModuleAllMeshResourceNames(bool commonRes = false)
         {
             byte comRes = (byte)((commonRes) ? 1 : 0);
+
+            string x = StringArrayTest(1, comRes, out IntPtr t);
+            //StringArrayTestUnload(t);
+            Console.WriteLine(x + " /// " + t);
+
             GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 1, comRes);
             List<string> list = GetRealNamesArray(ref managedStringArray, out List<string> moduleNames)[0];//only one possible
             return list;
@@ -467,6 +483,11 @@ namespace brfManager
         public List<List<string>> GetAllMeshResourceNames(out List<string> moduleNames, bool commonRes = false)
         {
             byte comRes = (byte)((commonRes) ? 1 : 0);
+
+            string x = StringArrayTest(0, comRes, out IntPtr t);
+            //StringArrayTestUnload(t);
+            Console.WriteLine(x + " /// " + t);
+
             GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 0, comRes);
             return GetRealNamesArray(ref managedStringArray, out moduleNames);
         }

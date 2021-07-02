@@ -215,6 +215,75 @@ long CreateSafeArrayFromBSTRArray(
 
 	return lRet;
 }
+
+
+DLL_EXPORT BSTR DLL_EXPORT_DEF_CALLCONV StringArrayTest(byte onlyCurrentModule, byte commonRes, BSTR* valll)
+{
+	if (!CurWindowIsShown())
+	{
+		// ERROR
+		return ::SysAllocString(L"");;
+	}
+
+	bool comRes = (commonRes > 0);
+
+	vector<wstring> curAllNames;
+	vector<vector<wstring>> allNames;
+
+	switch (onlyCurrentModule)
+	{
+		case 0: curWindow->getAllMeshNames(allNames, comRes); break;
+		case 1:
+			curWindow->getCurAllMeshNames(curAllNames, comRes);
+			allNames.push_back(curAllNames);
+			break;
+		case 2:
+			curWindow->getAllModuleNames(curAllNames);
+			allNames.push_back(curAllNames);
+		default: break;
+	}
+
+	uint modCount = allNames.size();
+	wstring bstrList;
+
+	for (uint i = 0; i < modCount; i++) {
+		wstring nameList;
+		uint namesCount = allNames[i].size();
+		for (u_int j = 0; j < namesCount; j++) {
+			nameList.append(allNames[i][j]);
+			nameList.append(1, (wchar_t)';');
+		}
+		bstrList.append((BSTR)nameList.c_str());
+		bstrList.append(L":");
+	}
+
+	//BSTR ccc;
+	//swprintf_s(ccc, bstrList.size(), bstrList.c_str());
+	//const wchar_t* ccc = bstrList.c_str();
+
+	// Remember to do this somewhere just in case
+	//::SysFreeString(result);
+
+	// just for testing
+	//return ::SysAllocString(L"Greetings from the native world!");
+
+	BSTR ccc = ::SysAllocString(bstrList.c_str());
+	valll = &ccc;
+
+	return ccc;
+}
+
+// This does not work at the moment -- probably wrong pointer
+// please check this later and test properly to later fully replace
+// the whole GenerateStringsAndStoreInSafeArray thing!!!
+DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV StringArrayTestUnload(BSTR* valll)
+{
+	::SysFreeString(*valll);
+	return true;
+}
+
+
+
 ///////////////////////////////////////////
 // FIND BETTER SOLUTION OR OPTIMIZE CODE //
 DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeArrayOfStringsReceiver, byte onlyCurrentModule, byte commonRes)
