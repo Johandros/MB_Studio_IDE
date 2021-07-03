@@ -5,12 +5,20 @@
 QT += opengl
 QT += xml
 
+# app default
+# CONFIG += exceptions
+# dll/lib default
 CONFIG += exceptions dll
 
 
 # RC_FILE = openBrf.rc
 TARGET = openBrf
-TEMPLATE = dll
+
+# app default
+# TEMPLATE = app
+# dll/lib default
+TEMPLATE = lib
+
 SOURCES += main.cpp \
     mainwindow.cpp \
     glwidgets.cpp \
@@ -142,7 +150,7 @@ OTHER_FILES += shaders/bump_vertex.cpp
 OTHER_FILES += shaders/iron_fragment.cpp
 OTHER_FILES += femininizer.morpher
 
-LIBS += -lopengl32 -lglu32
+LIBS += -lopengl32 -lglu32 -loleaut32
 
 DISTFILES += \
     translations/openbrf_de.ts \
