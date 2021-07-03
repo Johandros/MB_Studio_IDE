@@ -55,7 +55,7 @@ namespace brfManager
         );
 
         [DllImport(OPEN_BRF_DLL_PATH)]
-        public static extern int StringArrayTest(byte onlyCurrentModule, byte commonRes, [MarshalAs(UnmanagedType.BStr)]out string managedString);
+        public static extern int GetManagedStringBlock(byte onlyCurrentModule, byte commonRes, [MarshalAs(UnmanagedType.BStr)]out string managedString);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static byte IsCurHWndShown();
@@ -70,7 +70,7 @@ namespace brfManager
 
         #region Attributes / Properties
 
-        public bool IsShown { get { return (IsCurHWndShown() != 0) ? true : false; } }
+        public bool IsShown { get { return IsCurHWndShown() != 0; } }
 
         public static bool KillModeActive { get; private set; } = false;
 
@@ -442,7 +442,7 @@ namespace brfManager
         /// <returns></returns>
         public List<string> GetAllModuleNames()
         {
-            StringArrayTest(2, 0, out string managedString);
+            GetManagedStringBlock(2, 0, out string managedString);
 
             return ConvManagedStringToList(managedString);
         }
@@ -455,7 +455,7 @@ namespace brfManager
         {
             byte comRes = (byte)(commonRes ? 1 : 0);
 
-            StringArrayTest(1, comRes, out string managedString);
+            GetManagedStringBlock(1, comRes, out string managedString);
 
             return GetRealNamesArray(managedString, out string _);
         }
@@ -468,9 +468,7 @@ namespace brfManager
         {
             byte comRes = (byte)(commonRes ? 1 : 0);
 
-            StringArrayTest(0, comRes, out string managedString);
-
-            //GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 0, comRes);
+            GetManagedStringBlock(0, comRes, out string managedString);
 
             return GetRealNamesArrayFromArray(managedString, out moduleNames);
         }

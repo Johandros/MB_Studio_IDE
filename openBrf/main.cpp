@@ -157,67 +157,8 @@ DLL_EXPORT_VOID AddCurSelectedMeshsAllDataToMod(STRING modName) {
 		curWindow->copyCurMeshToMod(QString(modName));
 }
 
-///////////////////////////////////////////
-// FIND BETTER SOLUTION OR OPTIMIZE CODE //
-// CreateSafeArrayFromBSTRArray()
-// This function will create a SafeArray of BSTRs using the BSTR elements found inside
-// the first parameter "pBSTRArray".
-//
-// Note well that the output SafeArray will contain COPIES of the original BSTRs
-// inside the input parameter "pBSTRArray".
-long CreateSafeArrayFromBSTRArray(
-	BSTR* pBSTRArray,
-	ULONG ulArraySize,
-	SAFEARRAY** ppSafeArrayReceiver
-) {
-	HRESULT hrRetTemp = S_OK;
-	SAFEARRAY* pSAFEARRAYRet = NULL;
-	SAFEARRAYBOUND rgsabound[1];
-	ULONG ulIndex = 0;
-	long lRet = 0;
 
-	// Initialise receiver.
-	if (ppSafeArrayReceiver)
-		*ppSafeArrayReceiver = NULL;
-
-	if (pBSTRArray)
-	{
-		rgsabound[0].lLbound = 0;
-		rgsabound[0].cElements = ulArraySize;
-
-		pSAFEARRAYRet = (SAFEARRAY*)SafeArrayCreate
-		(
-			(VARTYPE)VT_BSTR,
-			(unsigned int)1,
-			(SAFEARRAYBOUND*)rgsabound
-		);
-	}
-
-	for (ulIndex = 0; ulIndex < ulArraySize; ulIndex++)
-	{
-		long lIndexVector[1];
-
-		lIndexVector[0] = ulIndex;
-
-		// Since pSAFEARRAYRet is created as a SafeArray of VT_BSTR,
-		// SafeArrayPutElement() will create a copy of each BSTR
-		// inserted into the SafeArray.
-		SafeArrayPutElement
-		(
-			(SAFEARRAY*)pSAFEARRAYRet,
-			(long*)lIndexVector,
-			(void*)(pBSTRArray[ulIndex])
-		);
-	}
-
-	if (pSAFEARRAYRet)
-		*ppSafeArrayReceiver = pSAFEARRAYRet;
-
-	return lRet;
-}
-
-
-DLL_EXPORT HRESULT DLL_EXPORT_DEF_CALLCONV StringArrayTest(byte onlyCurrentModule, byte commonRes, BSTR* managedString)
+DLL_EXPORT HRESULT DLL_EXPORT_DEF_CALLCONV GetManagedStringBlock(byte onlyCurrentModule, byte commonRes, BSTR* managedString)
 {
 	if (!CurWindowIsShown())
 	{
@@ -277,65 +218,6 @@ DLL_EXPORT HRESULT DLL_EXPORT_DEF_CALLCONV StringArrayTest(byte onlyCurrentModul
 	return S_OK;
 }
 
-// This does not work at the moment -- probably wrong pointer
-// please check this later and test properly to later fully replace
-// the whole GenerateStringsAndStoreInSafeArray thing!!!
-DLL_EXPORT bool DLL_EXPORT_DEF_CALLCONV StringArrayTestUnload(BSTR* valll)
-{
-	::SysFreeString(*valll);
-	return true;
-}
-
-
-
-///////////////////////////////////////////
-// FIND BETTER SOLUTION OR OPTIMIZE CODE //
-DLL_EXPORT_VOID GenerateStringsAndStoreInSafeArray(/*[out]*/ SAFEARRAY** ppSafeArrayOfStringsReceiver, byte onlyCurrentModule, byte commonRes)
-{
-	if (!CurWindowIsShown()) return;
-
-	bool comRes = (commonRes > 0);
-
-	vector<wstring> curAllNames;
-	vector<vector<wstring>> allNames;
-
-	switch (onlyCurrentModule)
-	{
-		case 0: curWindow->getAllMeshNames(allNames, comRes); break;
-		case 1:
-			curWindow->getCurAllMeshNames(curAllNames, comRes);
-			allNames.push_back(curAllNames);
-			break;
-		case 2:
-			curWindow->getAllModuleNames(curAllNames);
-			allNames.push_back(curAllNames);
-		default: break;
-	}
-
-	uint modCount = allNames.size();
-	vector<BSTR> bstrArray;//BSTR bstrArray[10] = { 0 };
-
-	for (uint i = 0; i < modCount; i++) {
-		wstring nameList;
-		uint namesCount = allNames[i].size();
-		for (u_int j = 0; j < namesCount; j++) {
-            nameList.append(allNames[i][j]);
-			nameList.append(1, (wchar_t)';');
-		}
-        bstrArray.push_back(::SysAllocString((BSTR)nameList.c_str()));//bstrArray[i] = ::SysAllocString(allNames[i].c_str()));
-	}
-
-	SAFEARRAY* pSafeArrayOfBSTR = NULL;
-	CreateSafeArrayFromBSTRArray (
-		&bstrArray[0],//vector<BSTR> to BSTR[]
-		modCount,
-		ppSafeArrayOfStringsReceiver
-	);
-
-	for (int i = 0; i < modCount; i++) {
-		::SysFreeString(bstrArray[i]);
-	}
-}
 
 /**
 * Main Method - For External Usage
