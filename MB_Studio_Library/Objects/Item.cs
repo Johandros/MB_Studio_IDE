@@ -334,7 +334,7 @@ namespace MB_Studio_Library.Objects
             {
                 // Triggers can cause errors because of code when imported from another mod!!!
                 // maybe deactivate trigger code on error
-                // MessageBox.Show(ex.ToString() + Environment.NewLine + values[0] + ";" + values[2] + ";" + values[3] + ";" + tmp + Environment.NewLine + values.Length);
+                System.Windows.Forms.MessageBox.Show(ex.ToString() + Environment.NewLine + values[0] + ";" + values[2] + ";" + values[3] + ";" + tmp + Environment.NewLine + values.Length);
                 Console.WriteLine(ex.ToString() + Environment.NewLine + values[0] + ";" + values[2] + ";" + values[3] + ";" + tmp + Environment.NewLine + values.Length);
             }
         }
