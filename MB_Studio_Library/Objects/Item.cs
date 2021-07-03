@@ -3,7 +3,6 @@ using MB_Studio_Library.Objects.Support;
 using System;
 using System.IO;
 using System.Globalization;
-using System.Windows.Forms;
 using System.Collections.Generic;
 using MB_Studio_Library.IO;
 
@@ -335,7 +334,8 @@ namespace MB_Studio_Library.Objects
             {
                 // Triggers can cause errors because of code when imported from another mod!!!
                 // maybe deactivate trigger code on error
-                MessageBox.Show(ex.ToString() + Environment.NewLine + values[0] + ";" + values[2] + ";" + values[3] + ";" + tmp + Environment.NewLine + values.Length);
+                // MessageBox.Show(ex.ToString() + Environment.NewLine + values[0] + ";" + values[2] + ";" + values[3] + ";" + tmp + Environment.NewLine + values.Length);
+                Console.WriteLine(ex.ToString() + Environment.NewLine + values[0] + ";" + values[2] + ";" + values[3] + ";" + tmp + Environment.NewLine + values.Length);
             }
         }
 
@@ -867,7 +867,7 @@ namespace MB_Studio_Library.Objects
 
         private void ErrorMsg(int x, int errorNumber)
         {
-            MessageBox.Show("There was an error somewhere in the file! --> x = " + x.ToString() + " : 0x" + errorNumber.ToString());
+            System.Windows.Forms.MessageBox.Show("There was an error somewhere in the file! --> x = " + x.ToString() + " : 0x" + errorNumber.ToString());
         }
 
         #endregion
