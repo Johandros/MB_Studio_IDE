@@ -217,12 +217,12 @@ long CreateSafeArrayFromBSTRArray(
 }
 
 
-DLL_EXPORT BSTR DLL_EXPORT_DEF_CALLCONV StringArrayTest(byte onlyCurrentModule, byte commonRes, BSTR* valll)
+DLL_EXPORT HRESULT DLL_EXPORT_DEF_CALLCONV StringArrayTest(byte onlyCurrentModule, byte commonRes, BSTR* managedString)
 {
 	if (!CurWindowIsShown())
 	{
-		// ERROR
-		return ::SysAllocString(L"");;
+		*managedString = SysAllocString(L"");
+		return S_FALSE; // ERROR
 	}
 
 	bool comRes = (commonRes > 0);
@@ -232,7 +232,8 @@ DLL_EXPORT BSTR DLL_EXPORT_DEF_CALLCONV StringArrayTest(byte onlyCurrentModule, 
 
 	switch (onlyCurrentModule)
 	{
-		case 0: curWindow->getAllMeshNames(allNames, comRes); break;
+		case 0: curWindow->getAllMeshNames(allNames, comRes);
+			break;
 		case 1:
 			curWindow->getCurAllMeshNames(curAllNames, comRes);
 			allNames.push_back(curAllNames);
@@ -240,8 +241,12 @@ DLL_EXPORT BSTR DLL_EXPORT_DEF_CALLCONV StringArrayTest(byte onlyCurrentModule, 
 		case 2:
 			curWindow->getAllModuleNames(curAllNames);
 			allNames.push_back(curAllNames);
-		default: break;
+		default:
+			break;
 	}
+
+	// claer - probably not necessary
+	curAllNames.clear();
 
 	uint modCount = allNames.size();
 	wstring bstrList;
@@ -253,24 +258,23 @@ DLL_EXPORT BSTR DLL_EXPORT_DEF_CALLCONV StringArrayTest(byte onlyCurrentModule, 
 			nameList.append(allNames[i][j]);
 			nameList.append(1, (wchar_t)';');
 		}
+
 		bstrList.append((BSTR)nameList.c_str());
-		bstrList.append(L":");
+
+		if (!onlyCurrentModule) {
+			bstrList.append(L":");
+		}
 	}
 
-	//BSTR ccc;
-	//swprintf_s(ccc, bstrList.size(), bstrList.c_str());
-	//const wchar_t* ccc = bstrList.c_str();
+	// claer - probably not necessary
+	allNames.clear();
 
-	// Remember to do this somewhere just in case
-	//::SysFreeString(result);
+	*managedString = SysAllocString(bstrList.c_str());
 
-	// just for testing
-	//return ::SysAllocString(L"Greetings from the native world!");
+	// claer - probably not necessary
+	bstrList.clear();
 
-	BSTR ccc = ::SysAllocString(bstrList.c_str());
-	valll = &ccc;
-
-	return ccc;
+	return S_OK;
 }
 
 // This does not work at the moment -- probably wrong pointer

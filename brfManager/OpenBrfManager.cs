@@ -55,11 +55,7 @@ namespace brfManager
         );
 
         [DllImport(OPEN_BRF_DLL_PATH)]
-        [return: MarshalAs(UnmanagedType.BStr)]
-        public static extern string StringArrayTest(byte onlyCurrentModule, byte commonRes, [MarshalAs(UnmanagedType.SysInt)]out IntPtr t);
-
-        [DllImport(OPEN_BRF_DLL_PATH)]
-        public static extern bool StringArrayTestUnload([MarshalAs(UnmanagedType.SysInt)]IntPtr t);
+        public static extern int StringArrayTest(byte onlyCurrentModule, byte commonRes, [MarshalAs(UnmanagedType.BStr)]out string managedString);
 
         [DllImport(OPEN_BRF_DLL_PATH)]
         public extern static byte IsCurHWndShown();
@@ -446,17 +442,9 @@ namespace brfManager
         /// <returns></returns>
         public List<string> GetAllModuleNames()
         {
-            string x = StringArrayTest(0, 2, out IntPtr t);
-            //StringArrayTestUnload(t);
-            Console.WriteLine(x + " /// " + t);
+            StringArrayTest(2, 0, out string managedString);
 
-            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 2);
-            managedStringArray = managedStringArray[0].TrimEnd(';').Split(';');
-            List<string> list = new List<string>();
-            foreach (string s in managedStringArray)
-                if (!list.Contains(s))
-                    list.Add(s);
-            return list;
+            return ConvManagedStringToList(managedString);
         }
 
         /// <summary>
@@ -465,15 +453,11 @@ namespace brfManager
         /// <returns></returns>
         public List<string> GetCurrentModuleAllMeshResourceNames(bool commonRes = false)
         {
-            byte comRes = (byte)((commonRes) ? 1 : 0);
+            byte comRes = (byte)(commonRes ? 1 : 0);
 
-            string x = StringArrayTest(1, comRes, out IntPtr t);
-            //StringArrayTestUnload(t);
-            Console.WriteLine(x + " /// " + t);
+            StringArrayTest(1, comRes, out string managedString);
 
-            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 1, comRes);
-            List<string> list = GetRealNamesArray(ref managedStringArray, out List<string> moduleNames)[0];//only one possible
-            return list;
+            return GetRealNamesArray(managedString, out string _);
         }
 
         /// <summary>
@@ -482,35 +466,65 @@ namespace brfManager
         /// <returns></returns>
         public List<List<string>> GetAllMeshResourceNames(out List<string> moduleNames, bool commonRes = false)
         {
-            byte comRes = (byte)((commonRes) ? 1 : 0);
+            byte comRes = (byte)(commonRes ? 1 : 0);
 
-            string x = StringArrayTest(0, comRes, out IntPtr t);
-            //StringArrayTestUnload(t);
-            Console.WriteLine(x + " /// " + t);
+            StringArrayTest(0, comRes, out string managedString);
 
-            GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 0, comRes);
-            return GetRealNamesArray(ref managedStringArray, out moduleNames);
+            //GenerateStringsAndStoreInSafeArray(out string[] managedStringArray, 0, comRes);
+
+            return GetRealNamesArrayFromArray(managedString, out moduleNames);
         }
 
-        private static List<List<string>> GetRealNamesArray(ref string[] managedStringArray, out List<string> modNames, bool filterDots = true)
+        private static List<string> ConvManagedStringToList(string managedString)
+        {
+            // Convert managedString into list of names
+            List<string> listX = new List<string>(managedString.TrimEnd(';').Split(';'));
+            return listX;
+        }
+
+        private static List<string> GetRealNamesArray(string managedString, out string modName, bool filterDots = true)
+        {
+            List<string> listX = ConvManagedStringToList(managedString);
+
+            // Get (current) mod name
+            int lastIdx = listX.Count - 1;
+            modName = listX[lastIdx];//last index is modName!
+            listX.RemoveAt(lastIdx);//last index is modName!
+            lastIdx--;
+
+            // remove lod or "duplicate" names
+            if (filterDots)
+            {
+                for (int i = lastIdx; i != 0; i--)
+                {
+                    string tmp = listX[i].Split('.')[0];
+                    if (listX.Contains(tmp))
+                    {
+                        listX.RemoveAt(i);
+                    }
+                    else
+                    {
+                        listX[i] = tmp;
+                    }
+                }
+            }
+
+            return listX;
+        }
+
+        private static List<List<string>> GetRealNamesArrayFromArray(string managedStringArray, out List<string> modNames, bool filterDots = true)
         {
             List<List<string>> allNames = new List<List<string>>();
             modNames = new List<string>();
-            foreach (string block in managedStringArray)
+
+            string[] managedArry = managedStringArray.TrimEnd(':').Split(':');
+
+            // for multiple mods and their names
+            foreach (string block in managedArry)
             {
-                List<string> listX = new List<string>(block.TrimEnd(';').Split(';'));
-                int lastIdx = listX.Count - 1;
-                if (!modNames.Contains(listX[lastIdx]))
+                List<string> listX = GetRealNamesArray(block, out string modName, filterDots);
+                if (!modNames.Contains(modName))
                 {
-                    modNames.Add(listX[lastIdx]);//last index is modName!
-                    listX.RemoveAt(lastIdx);//last index is modName!
-                    lastIdx--;
-                    for (int i = lastIdx; i != 0; i--)
-                    {
-                        string tmp = listX[i].Split('.')[0];
-                        if (listX.Contains(tmp)) listX.RemoveAt(i);
-                        else listX[i] = tmp;
-                    }
                     allNames.Add(listX);
                 }
             }

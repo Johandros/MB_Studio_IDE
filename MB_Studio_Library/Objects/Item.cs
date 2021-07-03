@@ -296,6 +296,10 @@ namespace MB_Studio_Library.Objects
                 ItemStats[i] = int.Parse(xvalues[i + tmp + 9]);
         }
 
+        /// <summary>
+        /// Way too complicated logic!!!
+        /// </summary>
+        /// <param name="values"></param>
         private void SetFactionAndTriggerValues(string[] values)
         {
             string[] tmpS;
@@ -329,6 +333,8 @@ namespace MB_Studio_Library.Objects
             }
             catch (Exception ex)
             {
+                // Triggers can cause errors because of code when imported from another mod!!!
+                // maybe deactivate trigger code on error
                 MessageBox.Show(ex.ToString() + Environment.NewLine + values[0] + ";" + values[2] + ";" + values[3] + ";" + tmp + Environment.NewLine + values.Length);
             }
         }
